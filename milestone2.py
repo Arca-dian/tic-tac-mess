@@ -2,8 +2,7 @@
 
 # GLOBAL VARIABLES #
 board = ['PLACEHOLDER', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-player = True   # True is X, False is O
-tag = 'PLACEHOLDER'
+tag = 'X'
 draw = False
 
 
@@ -17,19 +16,13 @@ def display():
 # PLAYER MOVE CHOICE #
 def move():
 
+    global board, tag, draw
     display()
-    global board, player, tag, draw
-    cell = 'PLACEHOLDER'
-    draw = False
 
-    if player is True:
-        tag = 'X'
-    else:
-        tag = 'O'
-
+    # Player chooses cell
     while True:
         cell = int(input('\n{}, select a cell: '.format(tag)))
-        if cell not in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+        if cell not in range(1,10):
             print('1-9 only please. See legend to the right of the board for cell numbers.')
         elif board[cell] != '-':
             print('Sorry, that spot is taken.')
@@ -38,52 +31,56 @@ def move():
 
     board[cell] = tag
 
-# Vertical win check
+    # Vertical win check
     if board[7] == tag and board[4] == tag and board[1] == tag:
         endgame()
     elif board[8] == tag and board[5] == tag and board[2] == tag:
         endgame()
-    elif board[8] == tag and board[5] == tag and board[2] == tag:
+    elif board[9] == tag and board[6] == tag and board[3] == tag:
         endgame()
-# Horizontal win check
+    # Horizontal win check
     elif board[7] == tag and board[8] == tag and board[9] == tag:
         endgame()
     elif board[4] == tag and board[5] == tag and board[6] == tag:
         endgame()
     elif board[1] == tag and board[2] == tag and board[3] == tag:
         endgame()
-# Diagonal win check
+    # Diagonal win check
     elif board[7] == tag and board[5] == tag and board[3] == tag:
         endgame()
     elif board[1] == tag and board[5] == tag and board[9] == tag:
         endgame()
-# Draw check
+    # Draw check
     elif '-' not in board:
         draw = True
         endgame()
+    # Swap who is playing
     else:
-        if player is True:
-            player = False
+        if tag == 'X':
+            tag = 'O'
         else:
-            player = True
+            tag = 'X'
         move()
 
 
 # GAME OVER #
 def endgame():
 
-    global board
+    global board, tag
     display()
 
+    # Print win/draw result
     if draw is True:
         print('\nIt\'s a draw!')
     else:
         print('{} wins!'.format(tag))
 
+    # Ask for rematch
     while True:
-        rematch = input('\nRematch? (y/n) ').lower()
+        rematch = input('Rematch? (y/n) ').lower()
         if rematch == 'y':
             board = ['PLACEHOLDER', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+            tag = 'X'
             move()
         elif rematch == 'n':
             print('Thanks for playing!')
@@ -92,7 +89,5 @@ def endgame():
             print('"y" or "n" only please. I am a dumb program. :)')
 
 
-# START GAME
+# IT'S GAME TIME #
 move()
-
-
